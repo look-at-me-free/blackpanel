@@ -23,11 +23,6 @@
     })();
   </script>
 
-  <script async src="https://a.magsrv.com/ad-provider.js"></script>
-  <script>
-    window.AdProvider = window.AdProvider || [];
-  </script>
-
   <style>
     :root{
       --bg:#080a10;
@@ -43,7 +38,6 @@
       --subtitle-font:"Rubik Iso", system-ui, sans-serif;
       --ui-font:"Handjet", system-ui, sans-serif;
       --pill-font:"Handjet", system-ui, sans-serif;
-      --readerW:min(100%, 820px);
     }
 
     *{
@@ -70,24 +64,6 @@
 
     a{ color:inherit; text-decoration:none; }
     button, input{ font:inherit; }
-
-    .page-progress{
-      position:fixed;
-      inset:0 0 auto 0;
-      z-index:7000;
-      height:3px;
-      background:rgba(255,255,255,.05);
-      backdrop-filter:blur(10px);
-      pointer-events:none;
-    }
-
-    .page-progress-bar{
-      width:0%;
-      height:100%;
-      background:linear-gradient(90deg, rgba(255,255,255,.94), rgba(255,255,255,.65));
-      box-shadow:0 0 18px rgba(255,255,255,.22);
-      transition:width .08s linear;
-    }
 
     .mobile-shell{
       width:100%;
@@ -236,9 +212,91 @@
       letter-spacing:.02em;
     }
 
+    .works-shell{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) 58px;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;
+      background:rgba(255,255,255,.035);
+      overflow:hidden;
+      min-height:320px;
+    }
+
+    .works-scroll{
+      max-height:420px;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      -webkit-overflow-scrolling:touch;
+      padding:10px;
+    }
+
     .works-accordion{
       display:grid;
       gap:8px;
+    }
+
+    .works-dial-rail{
+      border-left:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 0;
+    }
+
+    .works-dial-slot{
+      position:relative;
+      width:12px;
+      height:90%;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .works-dial-knob{
+      position:absolute;
+      left:50%;
+      top:0;
+      width:38px;
+      height:38px;
+      transform:translate(-50%, 0);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.3), rgba(255,255,255,.08) 45%, rgba(0,0,0,.18) 100%),
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      box-shadow:
+        0 8px 20px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.18);
+      cursor:grab;
+      touch-action:none;
+    }
+
+    .works-dial-knob::before{
+      content:"";
+      position:absolute;
+      inset:8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .works-dial-knob::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:6px;
+      width:2px;
+      height:10px;
+      transform:translateX(-50%);
+      border-radius:999px;
+      background:rgba(255,255,255,.7);
+    }
+
+    .works-dial-knob.dragging{
+      cursor:grabbing;
+      box-shadow:
+        0 12px 28px rgba(0,0,0,.42),
+        inset 0 1px 0 rgba(255,255,255,.2);
     }
 
     .work-block{
@@ -285,51 +343,12 @@
 
     .chapter-list{
       display:none;
-      padding:0 10px 12px;
+      padding:0 10px 10px;
       gap:8px;
     }
 
     .work-block.open .chapter-list{
       display:grid;
-    }
-
-    .chapter-scroll-shell{
-      margin:0 0 0;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:16px;
-      background:rgba(255,255,255,.035);
-      overflow:hidden;
-    }
-
-    .chapter-scroll-grabber{
-      min-height:48px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:8px 12px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.06);
-      color:var(--muted);
-      font-size:14px;
-      line-height:1;
-      user-select:none;
-    }
-
-    .chapter-scroll-grabber::before{
-      content:"↕";
-      font-size:22px;
-      line-height:1;
-    }
-
-    .chapter-scroll-track{
-      max-height:260px;
-      overflow-y:auto;
-      overscroll-behavior:contain;
-      -webkit-overflow-scrolling:touch;
-      padding:10px;
-      display:grid;
-      gap:8px;
     }
 
     .chapter-link{
@@ -350,184 +369,6 @@
       border-color:transparent;
     }
 
-    .layout{
-      max-width:100%;
-      margin:0 auto;
-      padding:0;
-      display:block;
-    }
-
-    .reader{
-      width:var(--readerW);
-      margin:0 auto;
-      min-width:0;
-      display:grid;
-      gap:10px;
-    }
-
-    .slot,
-    .image-wrap,
-    .note,
-    .traversal-shell,
-    .chapter-meta{
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-
-    .slot{
-      min-height:176px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(180deg, var(--panel2), var(--panel));
-      padding:2px;
-    }
-
-    .image-wrap{
-      background:#000;
-      margin-bottom:4px;
-    }
-
-    .image-wrap img{
-      display:block;
-      width:100%;
-      height:auto;
-      background:#000;
-    }
-
-    .chapter-meta,
-    .note,
-    .traversal-shell{
-      background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.032));
-      backdrop-filter:blur(8px);
-    }
-
-    .chapter-meta{
-      padding:14px;
-      display:grid;
-      gap:10px;
-    }
-
-    .meta-row{
-      display:grid;
-      gap:8px;
-    }
-
-    .chapter-tag{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:42px;
-      padding:0 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.05);
-      color:var(--muted);
-      font-size:13px;
-      font-weight:600;
-      line-height:1.1;
-      text-align:center;
-    }
-
-    .chapter-note{
-      color:var(--muted);
-      line-height:1.65;
-      font-size:14px;
-      text-align:center;
-    }
-
-    .note{
-      padding:14px;
-      line-height:1.65;
-      color:var(--muted);
-      font-size:14px;
-      text-align:center;
-    }
-
-    .traversal-shell{
-      padding:14px;
-      display:grid;
-      gap:12px;
-    }
-
-    .traversal-kicker{
-      margin:0;
-      color:var(--muted2);
-      text-align:center;
-      font-family:var(--subtitle-font);
-      font-size:10px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .continue-prompt{
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
-    }
-
-    .traversal-bar{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-
-    .traversal-pill{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.16);
-      background:#fff;
-      color:#0f1219;
-      min-height:44px;
-      padding:10px 14px;
-      border-radius:16px;
-      cursor:pointer;
-      font-size:14px;
-      line-height:1.1;
-      font-weight:700;
-      font-family:var(--pill-font);
-      letter-spacing:.02em;
-      box-shadow:0 10px 24px rgba(255,255,255,.12);
-      white-space:normal;
-      text-align:center;
-    }
-
-    .traversal-pill.current{
-      background:#dfe6ff;
-      color:#0a0d14;
-      box-shadow:0 14px 30px rgba(223,230,255,.22);
-    }
-
-    .reader-anchor{
-      display:block;
-      width:100%;
-      height:1px;
-    }
-
-    .between-grid{
-      display:grid;
-      grid-template-columns:1fr !important;
-      gap:10px;
-      width:100%;
-    }
-
-    .between-grid .slot{
-      min-height:250px;
-      padding:8px;
-    }
-
-    .end-grid{
-      display:none !important;
-    }
-
-    .exo-slot ins,
-    .slot ins{
-      display:block !important;
-      margin:0 auto !important;
-    }
-
     .mobile-bottom-space{
       height:16px;
     }
@@ -537,26 +378,18 @@
         padding-left:14px;
         padding-right:14px;
       }
-
-      .traversal-bar{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-      }
     }
   </style>
 </head>
 <body data-reader-mode="mobile">
-  <div class="page-progress" aria-hidden="true">
-    <div class="page-progress-bar" id="pageProgressBar"></div>
-  </div>
-
   <div class="mobile-shell">
     <header class="mobile-top">
       <div class="mobile-card">
         <div class="mobile-head">
           <div class="mobile-copy">
             <p class="mobile-eyebrow">Archive Reader</p>
-            <h1 id="workTitle">Loading…</h1>
-            <p>Simple, compact, and built to scroll.</p>
+            <h1 id="workTitle">Wallace Archive</h1>
+            <p>Browse by title. Scroll the list. Open what you want.</p>
           </div>
 
           <div class="mobile-tools">
@@ -570,25 +403,29 @@
 
             <div class="mobile-meta">
               <div class="mobile-stat" id="chapterSearchStat">Type to search</div>
-              <button class="mobile-chip" id="scrollToReaderBtn" type="button">To Reader</button>
+              <button class="mobile-chip" id="scrollToWorksBtn" type="button">To Works</button>
             </div>
 
             <div class="search-results" id="chapterSearchResults"></div>
 
-            <div class="works-accordion" id="worksAccordion"></div>
+            <div class="works-shell" id="worksShell">
+              <div class="works-scroll" id="worksScroll">
+                <div class="works-accordion" id="worksAccordion"></div>
+              </div>
+
+              <div class="works-dial-rail">
+                <div class="works-dial-slot" id="worksDialSlot">
+                  <div class="works-dial-knob" id="worksDialKnob"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </header>
 
-    <div class="layout">
-      <main class="reader" id="reader"></main>
-    </div>
-
     <div class="mobile-bottom-space"></div>
   </div>
-
-  <script defer src="index.js"></script>
 
   <script>
     (() => {
@@ -616,6 +453,14 @@
         };
       }
 
+      function mobileHref(dir, file) {
+        const basePath = window.location.pathname.replace(/\/[^\/]*$/, "/");
+        const href = new URL(window.location.origin + basePath + "mobile.html");
+        href.searchParams.set("dir", dir);
+        href.searchParams.set("file", file);
+        return href.toString();
+      }
+
       function clearSearchResultsIfEmpty() {
         const input = document.getElementById("chapterSearchInput");
         const results = document.getElementById("chapterSearchResults");
@@ -629,122 +474,229 @@
         }
       }
 
-      function wireChapterScrollSafety() {
-        const tracks = document.querySelectorAll(".chapter-scroll-track");
+      function wireWorksDial() {
+        const worksScroll = document.getElementById("worksScroll");
+        const slot = document.getElementById("worksDialSlot");
+        const knob = document.getElementById("worksDialKnob");
 
-        tracks.forEach(track => {
-          let moved = false;
-          let startY = 0;
+        if (!worksScroll || !slot || !knob) return;
 
-          track.addEventListener("touchstart", (e) => {
-            moved = false;
-            startY = e.touches[0].clientY;
-          }, { passive: true });
+        let dragging = false;
+        let startY = 0;
+        let startTop = 0;
 
-          track.addEventListener("touchmove", (e) => {
-            const delta = Math.abs(e.touches[0].clientY - startY);
-            if (delta > 8) moved = true;
-          }, { passive: true });
+        function getMaxKnobTop() {
+          return Math.max(0, slot.clientHeight - knob.offsetHeight);
+        }
 
-          track.addEventListener("click", (e) => {
-            if (moved) {
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          }, true);
+        function syncKnobToScroll() {
+          const maxScroll = worksScroll.scrollHeight - worksScroll.clientHeight;
+          const maxKnobTop = getMaxKnobTop();
+
+          if (maxScroll <= 0) {
+            knob.style.top = "0px";
+            return;
+          }
+
+          const ratio = worksScroll.scrollTop / maxScroll;
+          knob.style.top = `${ratio * maxKnobTop}px`;
+        }
+
+        function syncScrollToKnob(topPx) {
+          const maxKnobTop = getMaxKnobTop();
+          const maxScroll = worksScroll.scrollHeight - worksScroll.clientHeight;
+
+          if (maxKnobTop <= 0 || maxScroll <= 0) {
+            worksScroll.scrollTop = 0;
+            return;
+          }
+
+          const clamped = Math.max(0, Math.min(maxKnobTop, topPx));
+          const ratio = clamped / maxKnobTop;
+          worksScroll.scrollTop = ratio * maxScroll;
+        }
+
+        worksScroll.addEventListener("scroll", syncKnobToScroll, { passive: true });
+        window.addEventListener("resize", syncKnobToScroll);
+
+        knob.addEventListener("pointerdown", (e) => {
+          dragging = true;
+          startY = e.clientY;
+          startTop = parseFloat(knob.style.top || "0") || 0;
+          knob.classList.add("dragging");
+          knob.setPointerCapture(e.pointerId);
+          e.preventDefault();
         });
+
+        knob.addEventListener("pointermove", (e) => {
+          if (!dragging) return;
+          const delta = e.clientY - startY;
+          syncScrollToKnob(startTop + delta);
+        });
+
+        function stopDrag(e) {
+          if (!dragging) return;
+          dragging = false;
+          knob.classList.remove("dragging");
+          if (e?.pointerId != null) {
+            try { knob.releasePointerCapture(e.pointerId); } catch {}
+          }
+        }
+
+        knob.addEventListener("pointerup", stopDrag);
+        knob.addEventListener("pointercancel", stopDrag);
+
+        slot.addEventListener("click", (e) => {
+          if (e.target === knob) return;
+
+          const rect = slot.getBoundingClientRect();
+          const desiredTop = e.clientY - rect.top - knob.offsetHeight / 2;
+          syncScrollToKnob(desiredTop);
+        });
+
+        syncKnobToScroll();
+      }
+
+      function renderSearchResults(works, query) {
+        const results = document.getElementById("chapterSearchResults");
+        const stat = document.getElementById("chapterSearchStat");
+        if (!results || !stat) return;
+
+        const q = normalizeKey(query);
+        if (!q) {
+          results.innerHTML = "";
+          stat.textContent = "Type to search";
+          return;
+        }
+
+        const rows = [];
+        for (const work of works) {
+          for (const entry of work.entries || []) {
+            const workLabel = work.display || titleCaseSlug(work.slug);
+            const entryLabel = entry.subtitle || titleCaseSlug(entry.slug);
+            const key = normalizeKey(`${workLabel} ${entryLabel} ${entry.slug}`);
+
+            if (key.includes(q)) {
+              rows.push({
+                dir: work.slug,
+                file: entry.slug,
+                label: `${workLabel} · ${entryLabel}`
+              });
+            }
+          }
+        }
+
+        const limited = rows.slice(0, 12);
+
+        if (!limited.length) {
+          results.innerHTML = "";
+          stat.textContent = "No matches";
+          return;
+        }
+
+        stat.textContent = `${limited.length} result${limited.length === 1 ? "" : "s"}`;
+        results.innerHTML = limited.map(item => `
+          <button class="search-result-pill" type="button" data-dir="${item.dir}" data-file="${item.file}">
+            ${item.label}
+          </button>
+        `).join("");
       }
 
       async function loadAccordion() {
         const host = document.getElementById("worksAccordion");
+        const searchInput = document.getElementById("chapterSearchInput");
+        const searchResults = document.getElementById("chapterSearchResults");
+
         if (!host) return;
 
-        try {
-          const res = await fetch(LIBRARY_FILE, { cache: "no-store" });
-          if (!res.ok) throw new Error("Failed to load library.json");
+        const res = await fetch(LIBRARY_FILE, { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to load library.json");
 
-          const data = await res.json();
-          const works = Array.isArray(data.works) ? data.works : [];
-          const state = getQueryState();
+        const data = await res.json();
+        const works = Array.isArray(data.works) ? data.works : [];
+        const state = getQueryState();
 
-          let html = "";
+        let html = "";
 
-          for (const work of works) {
-            const workLabel = work.display || titleCaseSlug(work.slug);
-            const isCurrentWork = normalizeKey(work.slug) === normalizeKey(state.dir);
+        for (const work of works) {
+          const workLabel = work.display || titleCaseSlug(work.slug);
+          const isCurrentWork = normalizeKey(work.slug) === normalizeKey(state.dir);
 
-            html += `
-              <section class="work-block">
-                <button class="work-toggle" type="button">
-                  <span>${workLabel}</span>
-                  <span class="caret"></span>
-                </button>
-                <div class="chapter-list">
-                  <div class="chapter-scroll-shell">
-                    <div class="chapter-scroll-grabber">
-                      <span>Scroll chapters</span>
-                    </div>
-                    <div class="chapter-scroll-track">
-            `;
+          html += `
+            <section class="work-block">
+              <button class="work-toggle" type="button">
+                <span>${workLabel}</span>
+                <span class="caret"></span>
+              </button>
+              <div class="chapter-list">
+          `;
 
-            for (const entry of (work.entries || [])) {
-              const entryLabel = entry.subtitle || titleCaseSlug(entry.slug);
-              const isCurrent =
-                isCurrentWork && normalizeKey(entry.slug) === normalizeKey(state.file);
-
-              const href = new URL(window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, "/") + "mobile.html");
-              href.searchParams.set("dir", work.slug);
-              href.searchParams.set("file", entry.slug);
-
-              html += `
-                <a class="chapter-link${isCurrent ? " current" : ""}" href="${href.toString()}">
-                  ${workLabel} · ${entryLabel}
-                </a>
-              `;
-            }
+          for (const entry of work.entries || []) {
+            const entryLabel = entry.subtitle || titleCaseSlug(entry.slug);
+            const isCurrent =
+              isCurrentWork && normalizeKey(entry.slug) === normalizeKey(state.file);
 
             html += `
-                    </div>
-                  </div>
-                </div>
-              </section>
+              <a class="chapter-link${isCurrent ? " current" : ""}" href="${mobileHref(work.slug, entry.slug)}">
+                ${workLabel} · ${entryLabel}
+              </a>
             `;
           }
 
-          host.innerHTML = html;
+          html += `
+              </div>
+            </section>
+          `;
+        }
 
-          host.addEventListener("click", (e) => {
-            const btn = e.target.closest(".work-toggle");
+        host.innerHTML = html;
+
+        host.addEventListener("click", (e) => {
+          const btn = e.target.closest(".work-toggle");
+          if (!btn) return;
+
+          const block = btn.closest(".work-block");
+          if (!block) return;
+
+          block.classList.toggle("open");
+        });
+
+        if (searchInput) {
+          searchInput.addEventListener("input", () => {
+            renderSearchResults(works, searchInput.value);
+          });
+        }
+
+        if (searchResults) {
+          searchResults.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-dir][data-file]");
             if (!btn) return;
 
-            const block = btn.closest(".work-block");
-            if (!block) return;
-
-            block.classList.toggle("open");
+            window.location.href = mobileHref(btn.dataset.dir, btn.dataset.file);
           });
-
-          wireChapterScrollSafety();
-        } catch (err) {
-          console.error(err);
-          host.innerHTML = "";
         }
       }
 
-      function wireMobileBits() {
-        const toReaderBtn = document.getElementById("scrollToReaderBtn");
+      function wireButtons() {
+        const toWorksBtn = document.getElementById("scrollToWorksBtn");
+        const worksShell = document.getElementById("worksShell");
 
-        if (toReaderBtn) {
-          toReaderBtn.addEventListener("click", () => {
-            const target = document.getElementById("readerTopAnchor") || document.getElementById("reader");
-            if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (toWorksBtn && worksShell) {
+          toWorksBtn.addEventListener("click", () => {
+            worksShell.scrollIntoView({ behavior: "smooth", block: "nearest" });
           });
         }
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        wireMobileBits();
-        loadAccordion().catch(console.error);
+        wireButtons();
         clearSearchResultsIfEmpty();
+
+        loadAccordion()
+          .then(() => {
+            wireWorksDial();
+          })
+          .catch(console.error);
 
         const searchInput = document.getElementById("chapterSearchInput");
         if (searchInput) {
